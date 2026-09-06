@@ -4,92 +4,60 @@ import java.util.List;
 
 import vn.iotstar.dao.ICategoryDao;
 import vn.iotstar.dao.impl.CategoryDaoImpl;
-import vn.iotstar.models.Category;
+import vn.iotstar.models.CategoryModel;
 import vn.iotstar.services.ICategoryService;
 
-public class CategoryServiceImpl
-        implements ICategoryService {
+public class CategoryServiceImpl implements ICategoryService {
+	public ICategoryDao categoryDao = new CategoryDaoImpl();
 
-    private final ICategoryDao categoryDao =
-            new CategoryDaoImpl();
+	@Override
+	public List<CategoryModel> findAll() {
+		// TODO Auto-generated method stub
+		return categoryDao.findAll();
+	}
 
+	@Override
+	public List<CategoryModel> find(String keyword) {
+		// TODO Auto-generated method stub
+		return categoryDao.find(keyword);
+	}
 
-    @Override
-    public void insert(Category category) {
+	@Override
+	public CategoryModel findById(int id) {
+		// TODO Auto-generated method stub
+		return categoryDao.findById(id);
+	}
 
-        categoryDao.insert(category);
-    }
+	@Override
+	public void insert(CategoryModel category) {
+		// TODO Auto-generated method stub
+		categoryDao.insert(category);
+	}
 
+	@Override
+	public void update(CategoryModel category) {
+		// TODO Auto-generated method stub
+		CategoryModel cate = new CategoryModel();
+		cate = categoryDao.findById(category.getCategoryid());
+		if (cate != null) {
+			categoryDao.update(category);
+		} else {
+			System.out.println("Category not found");
+		}
 
-    @Override
-    public void edit(Category newCategory) {
+	}
 
-        Category oldCategory =
-                categoryDao.get(
-                        newCategory.getId()
-                );
+	@Override
+	public void delete(int id) {
+		// TODO Auto-generated method stub
+		CategoryModel cate = new CategoryModel();
+		cate = categoryDao.findById(id);
+		if (cate != null) {
+			categoryDao.delete(id);
+		} else {
+			System.out.println("Category not found");
+		}
 
-        if (oldCategory == null) {
+	}
 
-            return;
-        }
-
-        oldCategory.setName(
-                newCategory.getName()
-        );
-
-        if (newCategory.getIcon() != null
-                && !newCategory
-                .getIcon()
-                .isBlank()) {
-
-            oldCategory.setIcon(
-                    newCategory.getIcon()
-            );
-        }
-
-
-        categoryDao.edit(
-                oldCategory
-        );
-    }
-
-
-    @Override
-    public void delete(int id) {
-
-        categoryDao.delete(id);
-    }
-
-
-    @Override
-    public Category get(int id) {
-
-        return categoryDao.get(id);
-    }
-
-
-    @Override
-    public Category get(String name) {
-
-        return categoryDao.get(name);
-    }
-
-
-    @Override
-    public List<Category> getAll() {
-
-        return categoryDao.getAll();
-    }
-
-
-    @Override
-    public List<Category> search(
-            String keyword
-    ) {
-
-        return categoryDao.search(
-                keyword
-        );
-    }
 }

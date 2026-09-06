@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import vn.iotstar.models.Category;
+import vn.iotstar.models.CategoryModel;
 import vn.iotstar.services.ICategoryService;
 import vn.iotstar.services.impl.CategoryServiceImpl;
 import vn.iotstar.utils.Constant;
@@ -37,7 +37,7 @@ public class CategoryEditController
         String id =
                 req.getParameter("id");
 
-        Category category =
+        CategoryModel category =
                 cateService.get(
                         Integer.parseInt(id)
                 );
@@ -124,8 +124,8 @@ public class CategoryEditController
                     "category/" + fileName;
         }
 
-        Category category =
-                new Category();
+        CategoryModel category =
+                new CategoryModel();
 
         category.setId(id);
         category.setName(name);

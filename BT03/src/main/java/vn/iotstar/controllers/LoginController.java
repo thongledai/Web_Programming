@@ -33,10 +33,6 @@ public class LoginController extends HttpServlet {
 		String username = req.getParameter("uname");
 		String password = req.getParameter("psw");
 
-		// defensive: trim and avoid null pointer
-		if (username != null) username = username.trim();
-		if (password != null) password = password.trim();
-
 		String remember = req.getParameter("remember");
 		// kt tham số
 		boolean isRememberMe = false;
@@ -44,7 +40,7 @@ public class LoginController extends HttpServlet {
 			isRememberMe = true;
 		}
 		String alertMsg = "";
-		if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
+		if (username.isEmpty() || password.isEmpty()) {
 			alertMsg = "Tài khoản hoặc Mật khẩu không được rỗng";
 			req.setAttribute("alert", alertMsg);
 			req.getRequestDispatcher("/views/login.jsp").forward(req, resp);

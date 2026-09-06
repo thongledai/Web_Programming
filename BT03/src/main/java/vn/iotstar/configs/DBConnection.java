@@ -5,20 +5,15 @@ import java.sql.DriverManager;
 
 public class DBConnection {
 	private final String serverName = "localhost";
-	private final String dbName = "WebProgramming"; // align with persistence.xml
+	private final String dbName = "WebProgramming";
 	private final String portNumber = "1433";
-	private final String instance = ""; // optional instance from persistence.xml
+	private final String instance = "";
 	private final String userID = "sa";
-	private final String password = "123"; // match persistence.xml credentials
+	private final String password = "123";
 
 	public Connection getConnection() throws Exception {
-		// use the same connection settings as persistence.xml
-		// include instanceName if provided
-		String url = "jdbc:sqlserver://localhost";
-		if (instance != null && !instance.isBlank()) {
-			url += ";instanceName=" + instance;
-		}
-		url += ";databaseName=" + dbName + ";encrypt=true;trustServerCertificate=true";
+		String url = "jdbc:sqlserver://localhost:1433;" + "databaseName=WebProgramming;" + "encrypt=true;"
+				+ "trustServerCertificate=true";
 
 		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 

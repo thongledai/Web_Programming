@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import vn.iotstar.models.Category;
+import vn.iotstar.models.CategoryModel;
 import vn.iotstar.services.ICategoryService;
 import vn.iotstar.services.impl.CategoryServiceImpl;
 import vn.iotstar.utils.Constant;
@@ -106,8 +106,8 @@ public class CategoryAddController
                     "category/" + fileName;
         }
 
-        Category category =
-                new Category();
+        CategoryModel category =
+                new CategoryModel();
 
         category.setName(name);
         category.setIcon(iconPath);

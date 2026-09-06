@@ -50,14 +50,13 @@ public class UserDaoImpl extends DBConnection implements IUserDao {
 			while (rs.next()) {
 				UserModel user = new UserModel();
 				user.setId(rs.getInt("id"));
-				user.setUsername(rs.getString("username"));
-				user.setPassword(rs.getString("password"));
-				user.setFullname(rs.getString("fullname"));
-				user.setImages(rs.getString("images"));
 				user.setEmail(rs.getString("email"));
-				user.setPhone(rs.getString("phone"));
+				user.setUsername(rs.getString("username"));
+				user.setFullname(rs.getString("fullname"));
+				user.setPassword(rs.getString("password"));
+				user.setImages(rs.getString("images"));
 				user.setRoleid(Integer.parseInt(rs.getString("roleid")));
-
+				user.setPhone(rs.getString("phone"));
 				user.setCreateDate(rs.getDate("createDate"));
 				return user;
 			}
@@ -70,18 +69,19 @@ public class UserDaoImpl extends DBConnection implements IUserDao {
 
 	@Override
 	public void insert(UserModel user) {
-		String sql = "INSERT INTO users(id, username,password,fullname, images, email , phone, roleid, createDate) "
+		String sql = "INSERT INTO users(id, username, email, password, fullname, images, phone, roleid, createDate) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try {
 			conn = super.getConnection();
 			ps = conn.prepareStatement(sql);
+
 			ps.setInt(1, user.getId());
 			ps.setString(2, user.getUsername());
+			ps.setString(3, user.getEmail());
 			ps.setString(4, user.getPassword());
 			ps.setString(5, user.getFullname());
 			ps.setString(6, user.getImages());
-			ps.setString(3, user.getEmail());
 			ps.setString(7, user.getPhone());
 			ps.setInt(8, user.getRoleid());
 			ps.setDate(9, user.getCreateDate());
@@ -112,8 +112,7 @@ public class UserDaoImpl extends DBConnection implements IUserDao {
 
 	@Override
 	public UserModel findByUserName(String username) {
-		// perform case-insensitive username lookup to avoid collation mismatches
-		String sql = "SELECT * FROM users WHERE LOWER(username) = LOWER(?) ";
+		String sql = "SELECT * FROM users WHERE username = ? ";
 		try {
 			conn = new DBConnection().getConnection();
 			ps = conn.prepareStatement(sql);
@@ -122,13 +121,13 @@ public class UserDaoImpl extends DBConnection implements IUserDao {
 			while (rs.next()) {
 				UserModel user = new UserModel();
 				user.setId(rs.getInt("id"));
-				user.setUsername(rs.getString("username"));
-				user.setPassword(rs.getString("password"));
-				user.setFullname(rs.getString("fullname"));
-				user.setImages(rs.getString("images"));
 				user.setEmail(rs.getString("email"));
-				user.setPhone(rs.getString("phone"));
+				user.setUsername(rs.getString("username"));
+				user.setFullname(rs.getString("fullname"));
+				user.setPassword(rs.getString("password"));
+				user.setImages(rs.getString("images"));
 				user.setRoleid(Integer.parseInt(rs.getString("roleid")));
+				user.setPhone(rs.getString("phone"));
 				user.setCreateDate(rs.getDate("createDate"));
 				return user;
 			}
@@ -140,11 +139,10 @@ public class UserDaoImpl extends DBConnection implements IUserDao {
 	}
 
 	public static void main(String[] args) {
-		try {
-			IUserDao userDao = new UserDaoImpl();
-			System.out.println(userDao.findByUserName("thong"));
-		} catch (Exception e) {
-			e.printStackTrace();
+		UserDaoImpl userDao = new UserDaoImpl();
+		List<UserModel> list = userDao.findAll();
+		for (UserModel user : list) {
+			System.out.println(user);
 		}
 	}
 }

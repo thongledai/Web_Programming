@@ -2,21 +2,19 @@ package vn.iotstar.services;
 
 import java.util.List;
 
-import vn.iotstar.models.Category;
+import vn.iotstar.models.CategoryModel;
 
 public interface ICategoryService {
 
-    void insert(Category category);
+	List<CategoryModel> findAll();
 
-    void edit(Category category);
+	List<CategoryModel> find(String keyword);
 
-    void delete(int id);
+	CategoryModel findById(int id);
 
-    Category get(int id);
+	void insert(CategoryModel category);
 
-    Category get(String name);
+	void update(CategoryModel category);
 
-    List<Category> getAll();
-
-    List<Category> search(String keyword);
+	void delete(int id);
 }

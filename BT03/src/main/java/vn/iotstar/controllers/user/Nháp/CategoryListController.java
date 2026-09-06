@@ -9,7 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import vn.iotstar.models.Category;
+import vn.iotstar.models.CategoryModel;
 import vn.iotstar.services.ICategoryService;
 import vn.iotstar.services.impl.CategoryServiceImpl;
 
@@ -30,7 +30,7 @@ public class CategoryListController
             HttpServletResponse resp
     ) throws ServletException, IOException {
 
-        List<Category> cateList =
+        List<CategoryModel> cateList =
                 cateService.getAll();
 
         req.setAttribute(
