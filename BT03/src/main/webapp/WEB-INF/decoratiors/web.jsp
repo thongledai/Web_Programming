@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +8,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<sitemesh:write property="body" />
+	<div>
+		<%@include file="/common/web/header.jsp"%>
+	</div>
+	<div>
+		<sitemesh:write property="body" />
+	</div>
+	<div>
+		<%@include file="/common/web/footer.jsp"%>
+	</div>
 </body>
 </html>
