@@ -231,7 +231,7 @@
 							</div>
 						</li>
 					</ul></li>
-				<li><a href="shop-item.html">Kids</a></li>
+					<li><a href="${pageContext.request.contextPath}/product">Products</a></li>
 				<li class="dropdown dropdown100 nav-catalogue"><a
 					class="dropdown-toggle" data-toggle="dropdown" data-target="#"
 					href="#"> New </a>

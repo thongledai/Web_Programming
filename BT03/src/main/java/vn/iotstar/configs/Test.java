@@ -2,7 +2,7 @@ package vn.iotstar.configs;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import vn.iotstar.entity.Category;
+//import vn.iotstar.entity.Category;
 
 public class Test {
 	public static void main(String[] args) {

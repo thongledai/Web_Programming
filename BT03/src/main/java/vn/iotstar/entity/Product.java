@@ -28,7 +28,7 @@ public class Product implements Serializable {
 	@Column(name = "image", columnDefinition = "nvarchar(500)")
 	private String image;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "categoryid", nullable = false)
 	private Category category;
 

@@ -19,7 +19,7 @@ import vn.iotstar.services.impl.CategoryServiceImpl;
 import vn.iotstar.utils.Constant;
 
 @WebServlet(urlPatterns = {
-"/admin/categories",
+"/admin/category",
 "/admin/category/add",
 "/admin/category/insert",
 "/admin/category/edit",
@@ -43,26 +43,17 @@ public ICategoryService categoryService = new CategoryServiceImpl();
 protected void doGet(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
 
-    String url = req.getRequestURI();
+    String servletPath = req.getServletPath();
 
     req.setCharacterEncoding("UTF-8");
     resp.setCharacterEncoding("UTF-8");
 
-    if (url.contains("categories")) {
-
-        List<Category> list = categoryService.findAll();
-
-        req.setAttribute("listcate", list);
-
-        req.getRequestDispatcher("/views/admin/category-list.jsp")
-                .forward(req, resp);
-
-    } else if (url.contains("add")) {
+    if ("/admin/category/add".equals(servletPath)) {
 
         req.getRequestDispatcher("/views/admin/category-add.jsp")
                 .forward(req, resp);
 
-    } else if (url.contains("edit")) {
+    } else if ("/admin/category/edit".equals(servletPath)) {
 
         int id = Integer.parseInt(req.getParameter("id"));
 
@@ -73,7 +64,7 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp)
         req.getRequestDispatcher("/views/admin/category-edit.jsp")
                 .forward(req, resp);
 
-    } else if (url.contains("delete")) {
+    } else if ("/admin/category/delete".equals(servletPath)) {
 
         int id = Integer.parseInt(req.getParameter("id"));
 
@@ -94,14 +85,10 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 
         resp.sendRedirect(
                 req.getContextPath()
-                + "/admin/categories"
+                + "/admin/category"
         );
-    } else if (url.contains("update")) {
 
-        req.getRequestDispatcher("/views/admin/category-update.jsp")
-                .forward(req, resp);
-
-    } else if (url.contains("search")) {
+    } else if ("/admin/category/search".equals(servletPath)) {
 
         String keyword = req.getParameter("keyword");
 
@@ -114,6 +101,41 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp)
         }
 
         req.setAttribute("listcate", list);
+
+        req.getRequestDispatcher("/views/admin/category-list.jsp")
+                .forward(req, resp);
+
+    } else { // Default: /admin/category
+
+        int page = 1;
+        int pageSize = 5;
+
+        String pageParam = req.getParameter("page");
+        if (pageParam != null && !pageParam.trim().isEmpty()) {
+            try {
+                page = Integer.parseInt(pageParam.trim());
+            } catch (NumberFormatException e) {
+                page = 1;
+            }
+        }
+
+        if (page < 1) {
+            page = 1;
+        }
+
+        int totalCategories = categoryService.count();
+        int totalPages = (int) Math.ceil((double) totalCategories / pageSize);
+
+        if (totalPages > 0 && page > totalPages) {
+            page = totalPages;
+        }
+
+        List<Category> list = categoryService.findAll(page, pageSize);
+
+        req.setAttribute("listcate", list);
+        req.setAttribute("page", page);
+        req.setAttribute("pageSize", pageSize);
+        req.setAttribute("totalPages", totalPages);
 
         req.getRequestDispatcher("/views/admin/category-list.jsp")
                 .forward(req, resp);
@@ -166,7 +188,7 @@ protected void doPost(HttpServletRequest req, HttpServletResponse resp)
         }
 
         categoryService.insert(category);
-        resp.sendRedirect(req.getContextPath() + "/admin/categories");
+        resp.sendRedirect(req.getContextPath() + "/admin/category");
     }
 
     // UPDATE CATEGORY
@@ -203,7 +225,7 @@ protected void doPost(HttpServletRequest req, HttpServletResponse resp)
         category.setStatus(status);
 
         categoryService.update(category);
-        resp.sendRedirect(req.getContextPath() + "/admin/categories");
+        resp.sendRedirect(req.getContextPath() + "/admin/category");
     }
 }
 

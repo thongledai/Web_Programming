@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemesh>
-	<!-- A single Bootstrap template is shared by public, admin, manager and user views. -->
+
+		<!-- A single Bootstrap template is shared by public, admin, manager and user views. -->
 	<mapping path="/*" name="web" decorator="web.jsp" />
+	
+	<!-- CHƯA DÙNG -->
 	<mapping path="/v1/api/" name="api" exclude="true" />
+	
 </sitemesh>

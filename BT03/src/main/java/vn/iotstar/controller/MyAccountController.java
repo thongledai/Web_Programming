@@ -135,7 +135,7 @@ public class MyAccountController extends HttpServlet {
 		if (dot < 1 || !IMAGE_EXTENSIONS.contains(original.substring(dot + 1).toLowerCase())) {
 			throw new ServletException("Avatar phải là file ảnh JPG, PNG, GIF hoặc WEBP");
 		}
-		String name = "avatar_" + System.currentTimeMillis() + original.substring(dot).toLowerCase();
+		String name = "Avatar." + System.currentTimeMillis() + original.substring(dot).toLowerCase();
 		File directory = new File(Constant.DIR);
 		if (!directory.exists() && !directory.mkdirs()) throw new IOException("Không thể tạo thư mục upload");
 		part.write(new File(directory, name).getAbsolutePath());
