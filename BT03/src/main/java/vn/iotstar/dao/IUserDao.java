@@ -2,17 +2,26 @@ package vn.iotstar.dao;
 
 import java.util.List;
 
-import vn.iotstar.models.UserModel;
+import vn.iotstar.entity.User;
 
 public interface IUserDao {
-	List<UserModel> findAll();
+	List<User> findAll();
 
-	UserModel findById(int id);
+	User findById(int id);
 
-	UserModel findByUserName(String username);
+	User findByUserName(String username);
 
-	void insert(UserModel user);
+	User findByEmail(String email);
+
+	User findByCode(String code);
+
+	boolean existsByEmail(String email);
+
+	void insert(User user);
+
+	void save(User user);
+
+	void update(User user);
 
 	void delete(int id);
-
 }

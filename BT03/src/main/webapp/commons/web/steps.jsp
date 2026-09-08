@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
     <!-- BEGIN STEPS -->
     <div class="steps-block steps-block-red">
       <div class="container">

@@ -5,7 +5,11 @@
 
 <a href="${pageContext.request.contextPath}/admin/category/add">Add
 	Category</a>
-
+	
+<form action="${pageContext.request.contextPath}/admin/category/search" method="get">
+    <input type="text" name="keyword" placeholder="Search category">
+    <input type="submit" value="Search">
+</form>
 <table border="1" width="100%">
 	<tr>
 		<th>STT</th>
@@ -29,41 +33,16 @@
 			<td>${cate.categoryname}</td>
 
 			<td><c:if test="${cate.status == 1}">
-					<span>Con Hang</span>
-				</c:if> <c:if test="${cate.status != 1}">
-					<span>Het Hang</span>
+					<span>Open</span>
+				</c:if> <c:if test="${cate.status == 0}">
+					<span>Close</span>
 				</c:if></td>
 			<td><a
 				href="<c:url value='/admin/category/edit?id=${cate.categoryid}'/>">
-					Sửa </a> | <a
-				href="<c:url value='/admin/category/delete?id=${cate.categoryid}'/>">
-					Xóa </a></td>
+					Edit </a> | <a href="<c:url value='/admin/category/delete?id=${cate.categoryid}'/>">
+    Delete
+</a></td>
 		</tr>
 	</c:forEach>
 </table>
 
-<c:forEach items="${listcate}" var="cate" varStatus="STT">
-	<tr>
-		<td>${STT.index + 1}</td>
-
-		<td><c:if test="${cate.images.substring(0,5) != 'https'}">
-				<c:url value="/image?fname=${cate.images}" var="imgUrl"></c:url>
-			</c:if> <c:if test="${cate.images.substring(0,5) == 'https'}">
-				<c:url value="${cate.images}" var="imgUrl"></c:url>
-			</c:if></td>
-
-		<td>${cate.categoryid}</td>
-		<td>${cate.categoryname}</td>
-		<td><c:if test="${cate.status==1}">
-				<span>Còn hàng</span>
-			</c:if> <c:if test="${cate.status!=1}">
-				<span>Hết hàng</span>
-			</c:if></td>
-		<td><a
-			href="<c:url value='/admin/category/edit?id=${cate.categoryid}'/>">
-				Sửa </a> | <a
-			href="<c:url value='/admin/category/delete?id=${cate.categoryid}'/>">
-				Xóa </a></td>
-	</tr>
-</c:forEach>
-</table>

@@ -1,175 +1,131 @@
 package vn.iotstar.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
-import vn.iotstar.configs.DBConnection;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
+
+import vn.iotstar.configs.JPAConfig;
 import vn.iotstar.dao.ICategoryDao;
-import vn.iotstar.models.CategoryModel;
+import vn.iotstar.entity.Category;
 
 public class CategoryDaoImpl implements ICategoryDao {
-	public Connection conn = null;
-	public PreparedStatement ps = null;
-	public ResultSet rs = null;
 
 	@Override
-	public List<CategoryModel> find(String keyword) {
-
-		String sql = "SELECT * FROM categories " + "WHERE CAST(categoryid AS VARCHAR) LIKE ? "
-				+ "OR categoryname LIKE ? " + "OR CAST(status AS VARCHAR) LIKE ?";
-
-		List<CategoryModel> list = new ArrayList<>();
-
+	public List<Category> findAll() {
+		EntityManager em = JPAConfig.getEntityManager();
 		try {
-			conn = new DBConnection().getConnection();
-			ps = conn.prepareStatement(sql);
+			String jpql = "SELECT c FROM Category c";
+			TypedQuery<Category> query = em.createQuery(jpql, Category.class);
+			return query.getResultList();
+		} finally {
+			em.close();
+		}
+	}
 
-			ps.setString(1, "%" + keyword + "%");
-			ps.setString(2, "%" + keyword + "%");
-			ps.setString(3, "%" + keyword + "%");
+	@Override
+	public List<Category> find(String keyword) {
+		EntityManager em = JPAConfig.getEntityManager();
+		try {
+			String jpql = "SELECT c FROM Category c WHERE c.categoryname LIKE :keyword";
+			TypedQuery<Category> query = em.createQuery(jpql, Category.class);
+			query.setParameter("keyword", "%" + keyword + "%");
+			return query.getResultList();
+		} finally {
+			em.close();
+		}
+	}
 
-			rs = ps.executeQuery();
+	@Override
+	public Category findById(int id) {
+		EntityManager em = JPAConfig.getEntityManager();
+		try {
+			return em.find(Category.class, id);
+		} finally {
+			em.close();
+		}
+	}
 
-			while (rs.next()) {
-				CategoryModel category = new CategoryModel();
+	@Override
+	public void insert(Category category) {
+		EntityManager em = JPAConfig.getEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		try {
+			trans.begin();
+			em.persist(category);
+			trans.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			trans.rollback();
+			throw e;
+		} finally {
+			em.close();
+		}
+	}
 
-				category.setCategoryid(rs.getInt("categoryid"));
-				category.setCategoryname(rs.getString("categoryname"));
-				category.setImages(rs.getString("images"));
-				category.setStatus(rs.getInt("status"));
+	@Override
+	public void update(Category category) {
+		EntityManager em = JPAConfig.getEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		try {
+			trans.begin();
+			em.merge(category);
+			trans.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			trans.rollback();
+			throw e;
+		} finally {
+			em.close();
+		}
+	}
 
-				list.add(category);
+	@Override
+	public void delete(int id) throws Exception {
+		EntityManager em = JPAConfig.getEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		try {
+			trans.begin();
+			Category category = em.find(Category.class, id);
+			if (category != null) {
+				em.remove(category);
+			} else {
+				throw new Exception("Không tìm thấy");
 			}
-
-			return list;
-
+			trans.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	@Override
-	public CategoryModel findById(int id) {
-		// TODO Auto-generated method stub
-		String sql = "SELECT * FROM categories WHERE id = ?";
-		try {
-			conn = new DBConnection().getConnection();
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, id);
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				CategoryModel category = new CategoryModel();
-				category.setCategoryid(rs.getInt("id"));
-				category.setCategoryname(rs.getString("name"));
-				category.setImages(rs.getString("images"));
-				category.setStatus(rs.getInt("status"));
-				return category;
-			}
-			conn.close();
-			ps.close();
-			rs.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	@Override
-	public void update(CategoryModel category) {
-		// TODO Auto-generated method stub
-		String sql = "UPDATE categories SET categoryname=?, images=?, status=? WHERE categoryid=?";
-		try {
-			conn = new DBConnection().getConnection();
-			ps = conn.prepareStatement(sql);
-
-			ps.setString(1, category.getCategoryname());
-			ps.setString(2, category.getImages());
-			ps.setInt(3, category.getStatus());
-			ps.setInt(4, category.getCategoryid());
-
-			ps.executeUpdate();
-
-			conn.close();
-			ps.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
+			trans.rollback();
+			throw e;
+		} finally {
+			em.close();
 		}
 	}
 
 	@Override
-	public List<CategoryModel> findAll() {
-		// TODO Auto-generated method stub
-		String sql = "SELECT * FROM categories";
-		List<CategoryModel> list = new ArrayList<>();
+	public int count() {
+		EntityManager em = JPAConfig.getEntityManager();
 		try {
-			conn = new DBConnection().getConnection();
-			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				CategoryModel category = new CategoryModel();
-				category.setCategoryid(rs.getInt("categoryid"));
-				category.setCategoryname(rs.getString("categoryname"));
-				category.setImages(rs.getString("images"));
-				category.setStatus(rs.getInt("status"));
-				list.add(category);
-			}
-			conn.close();
-			ps.close();
-			rs.close();
-			return list;
-		} catch (Exception e) {
-			e.printStackTrace();
+			String jpql = "SELECT COUNT(c) FROM Category c";
+			TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+			Long count = query.getSingleResult();
+			return count.intValue();
+		} finally {
+			em.close();
 		}
-
-		return null;
 	}
 
 	@Override
-	public void insert(CategoryModel category) {
-		// TODO Auto-generated method stub
-		String sql = "INSERT INTO categories(categoryname, images, status) VALUES(?, ?, ?)";
-		try {
-			conn = new DBConnection().getConnection();
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, category.getCategoryname());
-			ps.setString(2, category.getImages());
-			ps.setInt(3, category.getStatus());
-			ps.executeUpdate();
-
-			conn.close();
-			ps.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+	public List<Category> findAll(int page, int pagesize) {
+		EntityManager em = JPAConfig.getEntityManager();
+		String jpql = "SELECT c FROM Category c";
+		TypedQuery<Category> query = em.createQuery(jpql, Category.class);
+		query.setFirstResult((page - 1) * pagesize);
+		query.setMaxResults(pagesize);
+		List<Category> categories = query.getResultList();
+		return categories;
 	}
+	
 
-	@Override
-	public void delete(int id) {
-		// TODO Auto-generated method stub
-		String sql = "DELETE FROM categories WHERE categoryid=?";
-		try {
-			conn = new DBConnection().getConnection();
-			ps = conn.prepareStatement(sql);
-
-			ps.setInt(1, id);
-
-			ps.executeUpdate();
-
-			conn.close();
-			ps.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 }

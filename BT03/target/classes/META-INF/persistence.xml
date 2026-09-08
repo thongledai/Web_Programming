@@ -8,14 +8,18 @@
              version="3.0">
 
     <persistence-unit
-            name="ServletCRUDMVCPU"
+            name="WebProgrammingJPA"
             transaction-type="RESOURCE_LOCAL">
 
         <provider>
             org.hibernate.jpa.HibernatePersistenceProvider
         </provider>
 
-        <class>vn.iotstar.models.Category</class>
+        <class>vn.iotstar.entity.Category</class>
+        <class>vn.iotstar.entity.Video</class>
+        <class>vn.iotstar.entity.Product</class>
+        <class>vn.iotstar.entity.Role</class>
+        <class>vn.iotstar.entity.User</class>
 
         <properties>
 
@@ -25,7 +29,7 @@
 
             <property
                     name="jakarta.persistence.jdbc.url"
-                    value="jdbc:sqlserver://localhost;instanceName=SQLEXPRESS01;databaseName=ServletCRUDMVC;encrypt=true;trustServerCertificate=true;"/>
+                    value="jdbc:sqlserver://localhost:1433;databaseName=WebProgrammingJPA;encrypt=true;trustServerCertificate=true;"/>
 
             <property
                     name="jakarta.persistence.jdbc.user"
@@ -33,7 +37,7 @@
 
             <property
                     name="jakarta.persistence.jdbc.password"
-                    value="zyy2709"/>
+                    value="123"/>
 
             <property
                     name="hibernate.hbm2ddl.auto"

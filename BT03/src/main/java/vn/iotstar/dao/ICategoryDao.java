@@ -2,19 +2,24 @@ package vn.iotstar.dao;
 
 import java.util.List;
 
-import vn.iotstar.models.CategoryModel;
+import vn.iotstar.entity.Category;
 
 public interface ICategoryDao {
 
-	List<CategoryModel> findAll();
+	List<Category> findAll();
 
-	List<CategoryModel> find(String keyword);
+	List<Category> findAll(int page, int pagesize);
 
-	CategoryModel findById(int id);
+	List<Category> find(String keyword);
 
-	void insert(CategoryModel category);
+	Category findById(int id);
 
-	void update(CategoryModel category);
+	void insert(Category category);
 
-	void delete(int id);
+	void update(Category category);
+
+	void delete(int id) throws Exception;
+
+	int count();
+
 }

@@ -1,32 +1,82 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
+
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
-<%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
 
 <form action="${pageContext.request.contextPath}/admin/category/update"
-	method="post" enctype="multipart/form-data">
-	<input type="hidden" name="categoryid" value="${category.categoryid}">
-	<label for="categoryname">Category Name:</label><br> 
-	<input type="text" id="categoryname" name="categoryname"
-		value="${category.categoryname}"><br> 
-		
-	<label for="images">Images:</label><br>
+      method="post"
+      enctype="multipart/form-data">
 
-	<c:if test="${not empty category.images}">
-		<c:choose>
-			<c:when test="${fn:startsWith(category.images, 'http')}">
-				<c:url value="${category.images}" var="imgUrl"></c:url>
-			</c:when>
-			<c:otherwise>
-				<c:url value="/image?fname=${category.images}" var="imgUrl"></c:url>
-			</c:otherwise>
-		</c:choose>
-		<img height="150" width="200" src="${imgUrl}" /> 
-	</c:if>
-	
-	<input type="file" id="images" name="images"><br> 
-	
-	<label for="status">Status:</label><br> 
-	<input type="text" id="status" name="status" value="${category.status}"><br> <br> 
-	<input type="submit" value="Submit">
+    <input type="hidden"
+           id="categoryid"
+           name="categoryid"
+           value="${cate.categoryid}">
+
+    <label for="categoryname">Category Name:</label><br>
+
+    <input type="text"
+           id="categoryname"
+           name="categoryname"
+           value="${cate.categoryname}">
+
+    <br>
+
+    <label>Image:</label><br>
+    <c:choose>
+        <c:when test="${not empty cate.images and cate.images.startsWith('https')}">
+            <c:set var="imgUrl" value="${cate.images}" />
+            <img id="imgPreview" src="${imgUrl}" width="150" height="120" alt="Ảnh xem trước"><br>
+        </c:when>
+        <c:when test="${not empty cate.images}">
+            <c:url value="/image?fname=${cate.images}" var="imgUrl"/>
+            <img id="imgPreview" src="${imgUrl}" width="150" height="120" alt="Ảnh xem trước"><br>
+        </c:when>
+        <c:otherwise>
+            <img id="imgPreview" style="display:none;" width="150" height="120" alt="Ảnh xem trước"><br>
+        </c:otherwise>
+    </c:choose>
+
+    <label for="images">New Image:</label><br>
+    <input type="file"
+           id="images"
+           name="images"
+           accept="image/*"
+           onchange="previewImage(this)">
+
+    <script>
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var img = document.getElementById('imgPreview');
+                if (img) {
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                }
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    </script>
+
+    <br><br>
+
+<label for="status">Status:</label><br>
+
+<select id="status" name="status">
+
+    <option value="1" ${cate.status == 1 ? 'selected' : ''}>
+        Open
+    </option>
+
+    <option value="0" ${cate.status == 0 ? 'selected' : ''}>
+        Close
+    </option>
+
+</select>
+
+<br><br>
+
+    <input type="submit" value="Submit">
+
 </form>

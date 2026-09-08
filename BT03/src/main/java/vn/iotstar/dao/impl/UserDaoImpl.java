@@ -1,148 +1,170 @@
 package vn.iotstar.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
-import vn.iotstar.configs.DBConnection;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
+
+import vn.iotstar.configs.JPAConfig;
 import vn.iotstar.dao.IUserDao;
-import vn.iotstar.models.UserModel;
+import vn.iotstar.entity.User;
 
-public class UserDaoImpl extends DBConnection implements IUserDao {
-
-	public Connection conn = null;
-	public PreparedStatement ps = null;
-	public ResultSet rs = null;
-	private Object insert;
+public class UserDaoImpl implements IUserDao {
 
 	@Override
-	public List<UserModel> findAll() {
-		String sql = "SELECT * FROM users";
-		List<UserModel> list = new ArrayList<UserModel>();
+	public List<User> findAll() {
+		EntityManager em = JPAConfig.getEntityManager();
 		try {
-			conn = new DBConnection().getConnection();
-			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				list.add(new UserModel(rs.getInt("id"), rs.getString("username"), rs.getString("password"),
-						rs.getString("fullname"), rs.getString("images"), rs.getString("email"), rs.getString("phone"),
-						rs.getInt("roleid"), rs.getDate("createDate")));
-
-			}
-			return list;
-		} catch (Exception e) {
-			e.printStackTrace();
-
+			return em.createQuery("SELECT u FROM User u", User.class).getResultList();
+		} finally {
+			em.close();
 		}
-		return null;
 	}
 
 	@Override
-	public UserModel findById(int id) {
-		String sql = "SELECT * FROM users WHERE id = ? ";
+	public User findById(int id) {
+		EntityManager em = JPAConfig.getEntityManager();
 		try {
-			conn = new DBConnection().getConnection();
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, id);
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				UserModel user = new UserModel();
-				user.setId(rs.getInt("id"));
-				user.setEmail(rs.getString("email"));
-				user.setUsername(rs.getString("username"));
-				user.setFullname(rs.getString("fullname"));
-				user.setPassword(rs.getString("password"));
-				user.setImages(rs.getString("images"));
-				user.setRoleid(Integer.parseInt(rs.getString("roleid")));
-				user.setPhone(rs.getString("phone"));
-				user.setCreateDate(rs.getDate("createDate"));
-				return user;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-
+			return em.find(User.class, id);
+		} finally {
+			em.close();
 		}
-		return null;
 	}
 
 	@Override
-	public void insert(UserModel user) {
-		String sql = "INSERT INTO users(id, username, email, password, fullname, images, phone, roleid, createDate) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	public User findByUserName(String username) {
+		EntityManager em = JPAConfig.getEntityManager();
+		try {
+			TypedQuery<User> query = em.createQuery(
+					"SELECT u FROM User u WHERE u.username = :username", User.class);
+			query.setParameter("username", username);
+			return query.getResultStream().findFirst().orElse(null);
+		} finally {
+			em.close();
+		}
+	}
+
+	@Override
+	public User findByEmail(String email) {
+		EntityManager em = JPAConfig.getEntityManager();
+		try {
+			TypedQuery<User> query = em.createQuery(
+					"SELECT u FROM User u WHERE u.email = :email", User.class);
+			query.setParameter("email", email);
+			return query.getResultStream().findFirst().orElse(null);
+		} finally {
+			em.close();
+		}
+	}
+
+	@Override
+	public User findByCode(String code) {
+		EntityManager em = JPAConfig.getEntityManager();
+		try {
+			TypedQuery<User> query = em.createQuery(
+					"SELECT u FROM User u WHERE u.code = :code", User.class);
+			query.setParameter("code", code);
+			return query.getResultStream().findFirst().orElse(null);
+		} finally {
+			em.close();
+		}
+	}
+
+	@Override
+	public void insert(User user) {
+		EntityManager em = JPAConfig.getEntityManager();
+		EntityTransaction trans = em.getTransaction();
 
 		try {
-			conn = super.getConnection();
-			ps = conn.prepareStatement(sql);
-
-			ps.setInt(1, user.getId());
-			ps.setString(2, user.getUsername());
-			ps.setString(3, user.getEmail());
-			ps.setString(4, user.getPassword());
-			ps.setString(5, user.getFullname());
-			ps.setString(6, user.getImages());
-			ps.setString(7, user.getPhone());
-			ps.setInt(8, user.getRoleid());
-			ps.setDate(9, user.getCreateDate());
-
-			ps.executeUpdate();
-
-		} catch (Exception e) {
-			e.printStackTrace();
+			trans.begin();
+			em.persist(user);
+			trans.commit();
+		} catch (RuntimeException e) {
+			rollback(trans);
+			throw e;
+		} finally {
+			em.close();
 		}
 	}
 
 	@Override
 	public void delete(int id) {
-		String sql = "DELETE FROM users WHERE id = ?";
+		EntityManager em = JPAConfig.getEntityManager();
+		EntityTransaction trans = em.getTransaction();
 
 		try {
-			conn = super.getConnection();
-			ps = conn.prepareStatement(sql);
+			trans.begin();
 
-			ps.setInt(1, id);
+			User user = em.find(User.class, id);
 
-			ps.executeUpdate();
+			if (user != null) {
+				em.remove(user);
+			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
+			trans.commit();
+		} catch (RuntimeException e) {
+			rollback(trans);
+			throw e;
+		} finally {
+			em.close();
 		}
 	}
 
 	@Override
-	public UserModel findByUserName(String username) {
-		String sql = "SELECT * FROM users WHERE username = ? ";
-		try {
-			conn = new DBConnection().getConnection();
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, username);
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				UserModel user = new UserModel();
-				user.setId(rs.getInt("id"));
-				user.setEmail(rs.getString("email"));
-				user.setUsername(rs.getString("username"));
-				user.setFullname(rs.getString("fullname"));
-				user.setPassword(rs.getString("password"));
-				user.setImages(rs.getString("images"));
-				user.setRoleid(Integer.parseInt(rs.getString("roleid")));
-				user.setPhone(rs.getString("phone"));
-				user.setCreateDate(rs.getDate("createDate"));
-				return user;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+	public boolean existsByEmail(String email) {
+		EntityManager em = JPAConfig.getEntityManager();
 
+		try {
+			String jpql = "SELECT COUNT(u) FROM User u WHERE u.email = :email";
+
+			Long count = em.createQuery(jpql, Long.class)
+					.setParameter("email", email)
+					.getSingleResult();
+
+			return count > 0;
+		} finally {
+			em.close();
 		}
-		return null;
 	}
 
-	public static void main(String[] args) {
-		UserDaoImpl userDao = new UserDaoImpl();
-		List<UserModel> list = userDao.findAll();
-		for (UserModel user : list) {
-			System.out.println(user);
+	@Override
+	public void save(User user) {
+		EntityManager em = JPAConfig.getEntityManager();
+		EntityTransaction trans = em.getTransaction();
+
+		try {
+			trans.begin();
+			em.persist(user);
+			trans.commit();
+		} catch (RuntimeException e) {
+			rollback(trans);
+			throw e;
+		} finally {
+			em.close();
+		}
+	}
+
+	@Override
+	public void update(User user) {
+		EntityManager em = JPAConfig.getEntityManager();
+		EntityTransaction trans = em.getTransaction();
+
+		try {
+			trans.begin();
+			em.merge(user);
+			trans.commit();
+		} catch (RuntimeException e) {
+			rollback(trans);
+			throw e;
+		} finally {
+			em.close();
+		}
+	}
+
+	private void rollback(EntityTransaction trans) {
+		if (trans.isActive()) {
+			trans.rollback();
 		}
 	}
 }
