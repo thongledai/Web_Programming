@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <%@ include file="/commons/web/slider.jsp" %>
 
 <div class="row margin-bottom-40">
-	<div class="col-md-10 sale-product">
+	<div class="col-md-12 sale-product">
 		<h2>New Products</h2>
 		<div class="owl-carousel owl-carousel5">
 			<c:forEach var="product" items="${newProducts}">
@@ -18,7 +19,7 @@
 						<h3>
 							<a href="${pageContext.request.contextPath}/product/detail?id=${product.productId}">${product.productName}</a>
 						</h3>
-						<div class="pi-price">${product.price} VNĐ</div>
+						<div class="pi-price"><fmt:formatNumber value="${product.price}" pattern="#,##0"/> VNĐ</div>
 					</div>
 				</div>
 			</c:forEach>

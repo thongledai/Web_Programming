@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <div class="row">
     <div class="col-md-12">
@@ -18,7 +19,7 @@
     <div class="col-md-8">
         <p><b>Mã SP:</b> ${product.productId}</p>
         <p><b>Tên SP:</b> ${product.productName}</p>
-        <p><b>Giá:</b> ${product.price} VNĐ</p>
+        <p><b>Giá:</b> <fmt:formatNumber value="${product.price}" pattern="#,##0"/> VNĐ</p>
         <p><b>Danh mục:</b> ${product.category.categoryname}</p>
         <p><b>Mô tả:</b> ${empty product.description ? 'Chưa có mô tả.' : product.description}</p>
 

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
 <%@ include file="/commons/web/slider.jsp" %>
 
@@ -24,7 +25,7 @@
 
                     <h4>${product.name}</h4>
 
-                    <p>${product.price}</p>
+                    <p><fmt:formatNumber value="${product.price}" pattern="#,##0"/> VNĐ</p>
 
                     <a href="${pageContext.request.contextPath}/product/detail?id=${product.id}">
                         Xem chi tiết

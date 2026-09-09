@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
 <div class="page-header">
     <div class="pull-left">
@@ -52,7 +53,7 @@
                         <a href="${pageContext.request.contextPath}/admin/products/detail?id=${p.productId}&categoryId=${categoryId}"><b>${p.productName}</b></a>
                     </td>
                     <td>${p.category.categoryname}</td>
-                    <td style="color: #d9534f; font-weight: bold;">${p.price} VNĐ</td>
+                    <td style="color: #d9534f; font-weight: bold;"><fmt:formatNumber value="${p.price}" pattern="#,##0"/> VNĐ</td>
                     <td>
                         <a href="${pageContext.request.contextPath}/admin/products/edit?id=${p.productId}&categoryId=${categoryId}" class="btn btn-warning btn-xs">Sửa</a>
                         <a href="${pageContext.request.contextPath}/admin/products/delete?id=${p.productId}&categoryId=${categoryId}" class="btn btn-danger btn-xs" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">Xóa</a>

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <div class="row margin-bottom-40">
     <div class="col-md-5 col-sm-5">
@@ -16,7 +17,7 @@
 
         <div class="price-availability-block clearfix">
             <div class="price">
-                <strong style="font-size: 28px; color: #e84d1c;">${product.price} VNĐ</strong>
+                <strong style="font-size: 28px; color: #e84d1c;"><fmt:formatNumber value="${product.price}" pattern="#,##0"/> VNĐ</strong>
             </div>
         </div>
 
