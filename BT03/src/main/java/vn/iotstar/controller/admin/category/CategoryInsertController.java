@@ -13,7 +13,7 @@ import vn.iotstar.entity.Category;
 import vn.iotstar.services.ICategoryService;
 import vn.iotstar.services.impl.CategoryServiceImpl;
 
-@WebServlet("/admin/categories/insert")
+@WebServlet(urlPatterns = { "/admin/categories/insert", "/admin/category/insert" })
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024,
         maxFileSize = 1024 * 1024 * 5,

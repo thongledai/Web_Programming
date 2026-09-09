@@ -14,7 +14,7 @@ import vn.iotstar.services.IUserService;
 import vn.iotstar.services.impl.UserServiceImpl;
 import vn.iotstar.utils.EmailUtils;
 
-@WebServlet(urlPatterns = { "/forgetpassword" })
+@WebServlet(urlPatterns = { "/forgetpassword", "/forgot-password" })
 public class ForgotPasswordController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;

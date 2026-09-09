@@ -12,7 +12,7 @@ import vn.iotstar.entity.Category;
 import vn.iotstar.services.ICategoryService;
 import vn.iotstar.services.impl.CategoryServiceImpl;
 
-@WebServlet("/admin/categories/edit")
+@WebServlet(urlPatterns = { "/admin/categories/edit", "/admin/category/edit" })
 public class CategoryEditController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

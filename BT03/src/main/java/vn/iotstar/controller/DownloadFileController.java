@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import vn.iotstar.utils.Constant;
 
-@WebServlet(urlPatterns = "/image")
+@WebServlet(urlPatterns = { "/image", "/download" })
 public class DownloadFileController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;

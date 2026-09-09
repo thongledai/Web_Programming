@@ -23,10 +23,15 @@ import vn.iotstar.utils.Constant;
 
 @WebServlet(urlPatterns = {
         "/admin/products",
+        "/admin/product",
         "/admin/products/add",
+        "/admin/product/add",
         "/admin/products/detail",
+        "/admin/product/detail",
         "/admin/products/edit",
-        "/admin/products/delete"
+        "/admin/product/edit",
+        "/admin/products/delete",
+        "/admin/product/delete"
 })
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024,
@@ -48,22 +53,22 @@ public class ProductController extends HttpServlet {
 
         String servletPath = req.getServletPath();
 
-        if ("/admin/products".equals(servletPath)) {
-            showProductList(req, resp);
-
-        } else if ("/admin/products/add".equals(servletPath)) {
+        if (servletPath.endsWith("/add")) {
             List<Category> categories = categoryService.findAll();
             req.setAttribute("categories", categories);
             req.getRequestDispatcher("/views/admin/product-add.jsp").forward(req, resp);
 
-        } else if ("/admin/products/detail".equals(servletPath)) {
+        } else if (servletPath.endsWith("/detail")) {
             showProductDetail(req, resp);
 
-        } else if ("/admin/products/edit".equals(servletPath)) {
+        } else if (servletPath.endsWith("/edit")) {
             showProductEdit(req, resp);
 
-        } else if ("/admin/products/delete".equals(servletPath)) {
+        } else if (servletPath.endsWith("/delete")) {
             deleteProduct(req, resp);
+
+        } else {
+            showProductList(req, resp);
         }
     }
 
@@ -75,10 +80,10 @@ public class ProductController extends HttpServlet {
 
         String servletPath = req.getServletPath();
 
-        if ("/admin/products/add".equals(servletPath)) {
+        if (servletPath.endsWith("/add")) {
             addProduct(req, resp);
 
-        } else if ("/admin/products/edit".equals(servletPath)) {
+        } else if (servletPath.endsWith("/edit")) {
             updateProduct(req, resp);
         }
     }

@@ -13,7 +13,7 @@ import vn.iotstar.entity.Category;
 import vn.iotstar.services.ICategoryService;
 import vn.iotstar.services.impl.CategoryServiceImpl;
 
-@WebServlet("/admin/categories/search")
+@WebServlet(urlPatterns = { "/admin/categories/search", "/admin/category/search" })
 public class CategorySearchController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
