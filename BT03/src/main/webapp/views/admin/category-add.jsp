@@ -1,16 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
 <h2>Add Category</h2>
 
-<form action="${pageContext.request.contextPath}/admin/category/insert"
+<form action="${pageContext.request.contextPath}/admin/categories/insert"
       method="post"
       enctype="multipart/form-data">
 
     <label for="categoryname">Category name:</label><br>
     <input type="text"
            id="categoryname"
-           name="categoryname">
+           name="categoryname"
+           value="${categoryname}">
+    <c:if test="${categorynameError != null}">
+        <span style="color: red; display: block; margin-top: 5px;">
+            ${categorynameError}
+        </span>
+    </c:if>
     <br><br>
 
     <label for="images">Image:</label><br>
@@ -20,14 +26,24 @@
            name="images"
            accept="image/*"
            onchange="previewImage(this)">
+    <c:if test="${imagesError != null}">
+        <span style="color: red; display: block; margin-top: 5px;">
+            ${imagesError}
+        </span>
+    </c:if>
     <br><br>
 
 <label for="status">Status:</label><br>
 
 <select id="status" name="status">
-    <option value="1">Open</option>
-    <option value="0">Close</option>
+    <option value="1" ${status == '1' ? 'selected' : ''}>Open</option>
+    <option value="0" ${status == '0' ? 'selected' : ''}>Close</option>
 </select>
+<c:if test="${statusError != null}">
+    <span style="color: red; display: block; margin-top: 5px;">
+        ${statusError}
+    </span>
+</c:if>
 
 <br><br>
 

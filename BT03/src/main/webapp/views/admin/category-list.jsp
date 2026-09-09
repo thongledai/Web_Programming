@@ -3,9 +3,9 @@
 
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
-<a href="${pageContext.request.contextPath}/admin/category/add">Add Category</a>
+<a href="${pageContext.request.contextPath}/admin/categories/add">Add Category</a>
 	
-<form action="${pageContext.request.contextPath}/admin/category/search" method="get" style="margin-top: 10px; margin-bottom: 10px;">
+<form action="${pageContext.request.contextPath}/admin/categories/search" method="get" style="margin-top: 10px; margin-bottom: 10px;">
     <input type="text" name="keyword" placeholder="Search category">
     <input type="submit" value="Search">
 </form>
@@ -50,9 +50,9 @@
 				</c:if>
 			</td>
 			<td>
-				<a href="<c:url value='/admin/product?categoryId=${cate.categoryid}'/>">Xem SP</a> |
-				<a href="<c:url value='/admin/category/edit?id=${cate.categoryid}'/>">Edit</a> |
-				<a href="<c:url value='/admin/category/delete?id=${cate.categoryid}'/>" onclick="return confirm('Bạn có chắc muốn xóa?');">Delete</a>
+				<a href="<c:url value='/admin/products?categoryId=${cate.categoryid}'/>">Xem SP</a> |
+				<a href="<c:url value='/admin/categories/edit?id=${cate.categoryid}'/>">Edit</a> |
+				<a href="<c:url value='/admin/categories/delete?id=${cate.categoryid}'/>" onclick="return confirm('Bạn có chắc muốn xóa?');">Delete</a>
 			</td>
 		</tr>
 	</c:forEach>
@@ -61,7 +61,7 @@
 <c:if test="${totalPages > 1}">
 	<div style="margin-top: 15px; text-align: center;">
 		<c:if test="${page > 1}">
-			<a href="${pageContext.request.contextPath}/admin/category?page=${page - 1}">Trang trước</a>
+			<a href="${pageContext.request.contextPath}/admin/categories?page=${page - 1}">Trang trước</a>
 		</c:if>
 
 		<c:forEach begin="1" end="${totalPages}" var="i">
@@ -70,13 +70,13 @@
 					<strong style="margin: 0 5px; font-size: 16px;">[${i}]</strong>
 				</c:when>
 				<c:otherwise>
-					<a href="${pageContext.request.contextPath}/admin/category?page=${i}" style="margin: 0 5px;">${i}</a>
+					<a href="${pageContext.request.contextPath}/admin/categories?page=${i}" style="margin: 0 5px;">${i}</a>
 				</c:otherwise>
 			</c:choose>
 		</c:forEach>
 
 		<c:if test="${page < totalPages}">
-			<a href="${pageContext.request.contextPath}/admin/category?page=${page + 1}">Trang sau</a>
+			<a href="${pageContext.request.contextPath}/admin/categories?page=${page + 1}">Trang sau</a>
 		</c:if>
 	</div>
 </c:if>

@@ -38,28 +38,29 @@ public class ForgotPasswordController extends HttpServlet {
 		resp.setContentType("text/html;charset=UTF-8");
 
 		String email = req.getParameter("email");
-
 		email = email != null ? email.trim() : "";
 
+		req.setAttribute("email", email);
+
+		String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+
 		if (email.isEmpty()) {
+			req.setAttribute("emailError", "Vui lòng nhập email");
+			req.getRequestDispatcher("/views/forgot-password.jsp").forward(req, resp);
+			return;
+		}
 
-			req.setAttribute("error", "Vui lòng nhập email");
-
-			req.getRequestDispatcher("/views/forgot-password.jsp")
-					.forward(req, resp);
-
+		if (!email.matches(emailRegex)) {
+			req.setAttribute("emailError", "Email không đúng định dạng");
+			req.getRequestDispatcher("/views/forgot-password.jsp").forward(req, resp);
 			return;
 		}
 
 		User user = service.findByEmail(email);
 
 		if (user == null) {
-
-			req.setAttribute("error", "Email không tồn tại");
-
-			req.getRequestDispatcher("/views/forgot-password.jsp")
-					.forward(req, resp);
-
+			req.setAttribute("emailError", "Email không tồn tại trong hệ thống");
+			req.getRequestDispatcher("/views/forgot-password.jsp").forward(req, resp);
 			return;
 		}
 

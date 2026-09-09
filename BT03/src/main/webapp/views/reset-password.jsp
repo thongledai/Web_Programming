@@ -36,9 +36,16 @@
 								class="form-control"
 								id="otp"
 								name="otp"
+								value="${otp}"
 								maxlength="6"
 								required
 								style="color: black;">
+
+							<c:if test="${otpError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${otpError}
+								</span>
+							</c:if>
 
 						</div>
 
@@ -59,6 +66,12 @@
 								required
 								style="color: black;">
 
+							<c:if test="${passwordError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${passwordError}
+								</span>
+							</c:if>
+
 						</div>
 
 					</div>
@@ -77,6 +90,12 @@
 								name="confirmPassword"
 								required
 								style="color: black;">
+
+							<c:if test="${confirmPasswordError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${confirmPasswordError}
+								</span>
+							</c:if>
 
 						</div>
 

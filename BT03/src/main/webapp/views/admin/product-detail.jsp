@@ -24,10 +24,10 @@
 
         <c:choose>
             <c:when test="${not empty param.categoryId}">
-                <a href="${pageContext.request.contextPath}/admin/product?categoryId=${param.categoryId}" class="btn btn-default">⬅ Quay lại</a>
+                <a href="${pageContext.request.contextPath}/admin/products?categoryId=${param.categoryId}" class="btn btn-default">⬅ Quay lại</a>
             </c:when>
             <c:otherwise>
-                <a href="${pageContext.request.contextPath}/admin/product" class="btn btn-default">⬅ Về danh sách</a>
+                <a href="${pageContext.request.contextPath}/admin/products" class="btn btn-default">⬅ Về danh sách</a>
             </c:otherwise>
         </c:choose>
     </div>

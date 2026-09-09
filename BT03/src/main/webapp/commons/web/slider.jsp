@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<%--
 <!-- BEGIN SLIDER -->
 <div class="page-slider margin-bottom-35">
 	<!-- LayerSlider start -->
@@ -194,3 +195,4 @@
 	<!-- LayerSlider end -->
 </div>
 <!-- END SLIDER -->
+ --%>

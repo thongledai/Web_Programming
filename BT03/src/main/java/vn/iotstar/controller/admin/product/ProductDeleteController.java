@@ -11,7 +11,7 @@ import vn.iotstar.services.impl.ProductServiceImpl;
 import vn.iotstar.services.IProductService;
 
 
-// @WebServlet("/admin/product/delete")
+// @WebServlet("/admin/products/delete")
 public class ProductDeleteController extends HttpServlet {
 	IProductService productService = new ProductServiceImpl();
 	private static final long serialVersionUID = 1L;
@@ -26,10 +26,10 @@ public class ProductDeleteController extends HttpServlet {
 			}
 		}
 		if (categoryId == null || categoryId.trim().isEmpty()) {
-			resp.sendRedirect(req.getContextPath() + "/admin/product");
+			resp.sendRedirect(req.getContextPath() + "/admin/products");
 			return;
 		}
-		resp.sendRedirect(req.getContextPath() + "/admin/product?categoryId=" + categoryId);
+		resp.sendRedirect(req.getContextPath() + "/admin/products?categoryId=" + categoryId);
 	}
 
 }

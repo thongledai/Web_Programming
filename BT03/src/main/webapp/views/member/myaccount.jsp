@@ -53,6 +53,11 @@
 							<input type="file" name="avatar"
 								accept="image/png,image/jpeg,image/gif,image/webp"
 								class="form-control">
+							<c:if test="${avatarError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${avatarError}
+								</span>
+							</c:if>
 						</div>
 					</div>
 					<div class="form-group">
@@ -60,13 +65,23 @@
 						<div class="col-sm-9">
 							<input class="form-control" name="username" required
 								value="<c:out value='${user.username}'/>">
+							<c:if test="${usernameError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${usernameError}
+								</span>
+							</c:if>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label">Họ tên</label>
+						<label class="col-sm-3 control-label">Họ tên *</label>
 						<div class="col-sm-9">
 							<input class="form-control" name="fullname"
 								value="<c:out value='${user.fullname}'/>">
+							<c:if test="${fullnameError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${fullnameError}
+								</span>
+							</c:if>
 						</div>
 					</div>
 					<div class="form-group">
@@ -74,6 +89,11 @@
 						<div class="col-sm-9">
 							<input type="email" class="form-control" name="email" required
 								value="<c:out value='${user.email}'/>">
+							<c:if test="${emailError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${emailError}
+								</span>
+							</c:if>
 						</div>
 					</div>
 					<div class="form-group">
@@ -81,6 +101,11 @@
 						<div class="col-sm-9">
 							<input class="form-control" name="phone"
 								value="<c:out value='${user.phone}'/>">
+							<c:if test="${phoneError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${phoneError}
+								</span>
+							</c:if>
 						</div>
 					</div>
 					<div class="form-group">
@@ -88,6 +113,11 @@
 						<div class="col-sm-9">
 							<input type="password" class="form-control" name="password"
 								placeholder="Để trống nếu không đổi">
+							<c:if test="${passwordError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${passwordError}
+								</span>
+							</c:if>
 						</div>
 					</div>
 					<div class="form-group">

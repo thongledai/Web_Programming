@@ -59,45 +59,64 @@ public class RegisterController extends HttpServlet {
 		req.setAttribute("email", email);
 		req.setAttribute("phone", phone);
 
-		if (username.isEmpty()
-				|| password.isEmpty()
-				|| confirmPassword.isEmpty()
-				|| email.isEmpty()) {
+		boolean hasError = false;
 
-			req.setAttribute(
-					"passwordError",
-					"Username, password và email không được để trống");
-
-			req.getRequestDispatcher("/views/register.jsp").forward(req, resp);
-			return;
+		// 1. Validation username
+		if (username.isEmpty()) {
+			req.setAttribute("usernameError", "Username không được để trống");
+			hasError = true;
+		} else if (username.length() < 3 || username.length() > 50) {
+			req.setAttribute("usernameError", "Username phải từ 3 đến 50 ký tự");
+			hasError = true;
+		} else if (service.FindByUserName(username) != null) {
+			req.setAttribute("usernameError", "Username đã tồn tại");
+			hasError = true;
 		}
 
-		if (!password.equals(confirmPassword)) {
-
-			req.setAttribute(
-					"passwordError",
-					"Password và Confirm Password không giống nhau");
-
-			req.getRequestDispatcher("/views/register.jsp").forward(req, resp);
-			return;
+		// 2. Validation password
+		if (password.isEmpty()) {
+			req.setAttribute("passwordError", "Password không được để trống");
+			hasError = true;
+		} else if (password.length() < 6) {
+			req.setAttribute("passwordError", "Password phải từ 6 ký tự trở lên");
+			hasError = true;
 		}
 
-		if (service.FindByUserName(username) != null) {
-
-			req.setAttribute(
-					"passwordError",
-					"Username đã tồn tại");
-
-			req.getRequestDispatcher("/views/register.jsp").forward(req, resp);
-			return;
+		// 3. Validation confirmPassword
+		if (confirmPassword.isEmpty()) {
+			req.setAttribute("confirmPasswordError", "Vui lòng nhập lại Password");
+			hasError = true;
+		} else if (!password.isEmpty() && !password.equals(confirmPassword)) {
+			req.setAttribute("confirmPasswordError", "Password và Confirm Password không giống nhau");
+			hasError = true;
 		}
 
-		if (service.existsByEmail(email)) {
+		// 4. Validation fullname
+		if (fullname.isEmpty()) {
+			req.setAttribute("fullnameError", "Họ tên không được để trống");
+			hasError = true;
+		}
 
-			req.setAttribute(
-					"passwordError",
-					"Email đã được sử dụng");
+		// 5. Validation email
+		String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+		if (email.isEmpty()) {
+			req.setAttribute("emailError", "Email không được để trống");
+			hasError = true;
+		} else if (!email.matches(emailRegex)) {
+			req.setAttribute("emailError", "Email không đúng định dạng");
+			hasError = true;
+		} else if (service.existsByEmail(email)) {
+			req.setAttribute("emailError", "Email đã được sử dụng");
+			hasError = true;
+		}
 
+		// 6. Validation phone
+		if (!phone.isEmpty() && !phone.matches("^0[0-9]{9,10}$")) {
+			req.setAttribute("phoneError", "Số điện thoại không hợp lệ (phải từ 10-11 số và bắt đầu bằng 0)");
+			hasError = true;
+		}
+
+		if (hasError) {
 			req.getRequestDispatcher("/views/register.jsp").forward(req, resp);
 			return;
 		}

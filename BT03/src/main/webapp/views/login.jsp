@@ -31,8 +31,14 @@
 						<div class="col-lg-8">
 
 							<input type="text" class="form-control" id="username"
-								name="username" required
+								name="username" value="${username}" required
 								style="color: black;">
+
+							<c:if test="${usernameError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${usernameError}
+								</span>
+							</c:if>
 
 						</div>
 

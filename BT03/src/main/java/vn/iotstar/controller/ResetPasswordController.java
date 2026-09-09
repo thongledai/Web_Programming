@@ -60,57 +60,51 @@ public class ResetPasswordController extends HttpServlet {
 				? confirmPassword.trim()
 				: "";
 
-		if (otp.isEmpty()
-				|| password.isEmpty()
-				|| confirmPassword.isEmpty()) {
+		req.setAttribute("otp", otp);
 
-			req.setAttribute(
-					"error",
-					"Vui lòng nhập đầy đủ thông tin");
+		boolean hasError = false;
 
-			req.getRequestDispatcher("/views/reset-password.jsp")
-					.forward(req, resp);
-
-			return;
+		if (otp.isEmpty()) {
+			req.setAttribute("otpError", "Vui lòng nhập mã OTP");
+			hasError = true;
+		} else if (!otp.matches("^[0-9]{6}$")) {
+			req.setAttribute("otpError", "Mã OTP phải gồm 6 chữ số");
+			hasError = true;
 		}
 
-		if (!password.equals(confirmPassword)) {
+		if (password.isEmpty()) {
+			req.setAttribute("passwordError", "Mật khẩu mới không được để trống");
+			hasError = true;
+		} else if (password.length() < 6) {
+			req.setAttribute("passwordError", "Mật khẩu phải từ 6 ký tự trở lên");
+			hasError = true;
+		}
 
-			req.setAttribute(
-					"error",
-					"Password và Confirm Password không giống nhau");
+		if (confirmPassword.isEmpty()) {
+			req.setAttribute("confirmPasswordError", "Vui lòng nhập lại mật khẩu mới");
+			hasError = true;
+		} else if (!password.isEmpty() && !password.equals(confirmPassword)) {
+			req.setAttribute("confirmPasswordError", "Password và Confirm Password không giống nhau");
+			hasError = true;
+		}
 
-			req.getRequestDispatcher("/views/reset-password.jsp")
-					.forward(req, resp);
-
+		if (hasError) {
+			req.getRequestDispatcher("/views/reset-password.jsp").forward(req, resp);
 			return;
 		}
 
 		User user = service.findByEmail(email);
 
 		if (user == null) {
-
 			session.removeAttribute("forgotPasswordEmail");
-
-			req.setAttribute(
-					"error",
-					"Không tìm thấy tài khoản");
-
-			req.getRequestDispatcher("/views/forgot-password.jsp")
-					.forward(req, resp);
-
+			req.setAttribute("otpError", "Không tìm thấy tài khoản");
+			req.getRequestDispatcher("/views/forgot-password.jsp").forward(req, resp);
 			return;
 		}
 
 		if (!otp.equals(user.getCode())) {
-
-			req.setAttribute(
-					"error",
-					"Mã OTP không chính xác");
-
-			req.getRequestDispatcher("/views/reset-password.jsp")
-					.forward(req, resp);
-
+			req.setAttribute("otpError", "Mã OTP không chính xác");
+			req.getRequestDispatcher("/views/reset-password.jsp").forward(req, resp);
 			return;
 		}
 

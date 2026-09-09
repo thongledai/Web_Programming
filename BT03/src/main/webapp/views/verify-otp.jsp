@@ -40,9 +40,16 @@
 								class="form-control"
 								id="otp"
 								name="otp"
+								value="${otp}"
 								maxlength="6"
 								required
 								style="color: black;">
+
+							<c:if test="${otpError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${otpError}
+								</span>
+							</c:if>
 
 						</div>
 

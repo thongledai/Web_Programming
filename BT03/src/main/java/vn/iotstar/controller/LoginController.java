@@ -20,7 +20,7 @@ public class LoginController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	IUserService service = new UserServiceImpl();
+	private IUserService service = new UserServiceImpl();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -43,31 +43,38 @@ public class LoginController extends HttpServlet {
 
 		boolean isRememberMe = "on".equals(remember);
 
-		if (username == null || username.trim().isEmpty()
-				|| password == null || password.trim().isEmpty()) {
+		username = (username != null) ? username.trim() : "";
+		password = (password != null) ? password.trim() : "";
 
-			req.setAttribute("passwordError", "Username hoặc password không được để trống");
+		boolean hasError = false;
+
+		if (username.isEmpty()) {
+			req.setAttribute("usernameError", "Username không được để trống");
+			hasError = true;
+		}
+
+		if (password.isEmpty()) {
+			req.setAttribute("passwordError", "Mật khẩu không được để trống");
+			hasError = true;
+		}
+
+		req.setAttribute("username", username);
+
+		if (hasError) {
 			req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
 			return;
 		}
 
 		User user = service.FindByUserName(username);
 
-		if (user == null) {
-			req.setAttribute("passwordError", "Incorrect account or password");
-			req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
-			return;
-		}
-
-		if (!password.equals(user.getPassword())) {
-			req.setAttribute("passwordError", "Incorrect account or password");
+		if (user == null || !password.equals(user.getPassword())) {
+			req.setAttribute("passwordError", "Tài khoản hoặc mật khẩu không chính xác");
 			req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
 			return;
 		}
 
 		if (user.getStatus() == 0) {
 			req.setAttribute("passwordError", "Tài khoản chưa được kích hoạt");
-
 			req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
 			return;
 		}

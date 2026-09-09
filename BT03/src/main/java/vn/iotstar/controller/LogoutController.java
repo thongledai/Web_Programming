@@ -23,7 +23,7 @@ public class LogoutController extends HttpServlet {
 		}
 		
 		// Redirect về login
-		resp.sendRedirect(req.getContextPath() + "/login");
+		resp.sendRedirect(req.getContextPath() + "/home");
 	}
 
 }

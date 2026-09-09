@@ -19,7 +19,7 @@ import vn.iotstar.services.IProductService;
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
 maxFileSize = 1024 * 1024 * 10, // 10MB
 maxRequestSize = 1024 * 1024 * 50) // 50MB
-// @WebServlet(urlPatterns = { "/admin/product/edit", "/admin/product/update" })
+// @WebServlet(urlPatterns = { "/admin/products/edit", "/admin/products/update" })
 public class ProductEditController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	IProductService productService = new ProductServiceImpl();
@@ -37,10 +37,18 @@ public class ProductEditController extends HttpServlet {
 		req.getRequestDispatcher("/views/admin/product-edit.jsp").forward(req, resp);
 	}
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String name=req.getParameter("productName");
-		String priceStr=req.getParameter("price");
-		String description=req.getParameter("description");
-		int productId = Integer.parseInt(req.getParameter("productId"));
+		String name = req.getParameter("productName");
+		String priceStr = req.getParameter("price");
+		String description = req.getParameter("description");
+		String productIdStr = req.getParameter("productId");
+		int productId = 0;
+		if (productIdStr != null && !productIdStr.trim().isEmpty()) {
+			try {
+				productId = Integer.parseInt(productIdStr.trim());
+			} catch (NumberFormatException e) {
+				productId = 0;
+			}
+		}
 		double price = 0.0;
 		if (priceStr != null && !priceStr.trim().isEmpty()) {
 			try {
@@ -49,8 +57,12 @@ public class ProductEditController extends HttpServlet {
 				price = 0.0;
 			}
 		}
-		// 1. Lấy entity từ DB lên (đã chứa sẵn tên ảnh cũ trong product.getImage())
+		// 1. Lấy entity từ DB lên
 		Product product = productService.findById(productId);
+		if (product == null) {
+			resp.sendRedirect(req.getContextPath() + "/admin/products");
+			return;
+		}
 		product.setProductName(name);
 		product.setPrice(price);
 		product.setDescription(description);
@@ -83,7 +95,7 @@ public class ProductEditController extends HttpServlet {
 
 		// 3. Cập nhật xuống Database
 		productService.update(product);
-		resp.sendRedirect(req.getContextPath() + "/admin/product?categoryId=" + req.getParameter("categoryId"));
+		resp.sendRedirect(req.getContextPath() + "/admin/products?categoryId=" + req.getParameter("categoryId"));
 
 }
 }

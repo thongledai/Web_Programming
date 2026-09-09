@@ -1,7 +1,58 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
+
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
+<footer class="header">
+
+    <h1>Đây là header của web</h1>
+
+			<div class="col-md-6 col-sm-6 additional-nav">
+				<ul class="list-unstyled list-inline pull-right">
+
+					
+					<li><c:choose>
+							<c:when test="${sessionScope.account == null}">
+								<a href="${pageContext.request.contextPath}/login">Login  </a>
+								|<a href="${pageContext.request.contextPath}/register">  Register</a>
+							</c:when>
+							<c:otherwise>
+								<a href="${pageContext.request.contextPath}/member/myaccount">${sessionScope.account.fullname}</a>
+								|<a href="${pageContext.request.contextPath}/logout">Logout</a>
+							</c:otherwise>
+						</c:choose></li>
+						
+				</ul>
+			</div>
+
+
+</footer>
+
+<style>
+    .header {
+        width: 100%;
+        height: 150px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(0, 0, 0);
+        color: white;
+    }
+
+    .header h1 {
+        font-size: 32px;
+    }
+
+    .header a {
+        color: white;
+        margin: 0 10px;
+    }
+</style>
+
+
+<%-- 
 <!-- BEGIN TOP BAR -->
 <div class="pre-header">
 	<div class="container">
@@ -352,3 +403,4 @@
 	</div>
 </div>
 <!-- Header END -->
+--%>

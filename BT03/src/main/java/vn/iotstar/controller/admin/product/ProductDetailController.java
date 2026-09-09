@@ -12,7 +12,7 @@ import vn.iotstar.services.impl.ProductServiceImpl;
 import vn.iotstar.services.IProductService;
 
 
-// @WebServlet(urlPatterns = {  "/admin/product/detail" })
+// @WebServlet(urlPatterns = {  "/admin/products/detail" })
 public class ProductDetailController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private IProductService productService = new ProductServiceImpl();
@@ -33,6 +33,6 @@ public class ProductDetailController extends HttpServlet {
                 e.printStackTrace();
             }
         }
-        resp.sendRedirect(req.getContextPath() + "/admin/product?categoryId=" + req.getParameter("categoryId"));
+        resp.sendRedirect(req.getContextPath() + "/admin/products?categoryId=" + req.getParameter("categoryId"));
     }
 }

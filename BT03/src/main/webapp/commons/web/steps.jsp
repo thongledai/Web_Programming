@@ -1,6 +1,41 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
+<div class="steps">
+    <div class="container">
+        <h1>Đây là steps của web</h1>
+    </div>
+</div>
+
+<style>
+    .steps {
+        width: 100%;
+        background-color: rgb(255, 0, 0);
+        text-align: center;
+        padding: 30px 0;
+    }
+
+    .steps h1 {
+        color: white;
+        margin: 0;
+    }
+</style>
+<%-- 
+<style>
+    .footer {
+        width: 100%;
+        height: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(0, 0, 0);
+    }
+
+    .footer h1 {
+        font-size: 32px;
+    }
+</style>
+    
     <!-- BEGIN STEPS -->
     <div class="steps-block steps-block-red">
       <div class="container">
@@ -32,3 +67,5 @@
       </div>
     </div>
     <!-- END STEPS -->
+    
+    --%>

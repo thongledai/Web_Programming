@@ -5,24 +5,20 @@
 <%@ include file="/commons/web/slider.jsp" %>
 
 <div class="row margin-bottom-40">
-	<div class="col-md-12 sale-product">
-		<h2>Sản phẩm mới nhất</h2>
+	<div class="col-md-10 sale-product">
+		<h2>New Products</h2>
 		<div class="owl-carousel owl-carousel5">
 			<c:forEach var="product" items="${newProducts}">
 				<div>
 					<div class="product-item">
 						<div class="pi-img-wrapper">
 							<img src="${pageContext.request.contextPath}/image?fname=${product.image}" class="img-responsive" alt="${product.productName}" style="height: 260px; object-fit: cover; width: 100%;">
-							<div>
-								<a href="${pageContext.request.contextPath}/image?fname=${product.image}" class="btn btn-default fancybox-button">Zoom</a>
-								<a href="${pageContext.request.contextPath}/product/detail?id=${product.productId}" class="btn btn-default fancybox-fast-view">View</a>
-							</div>
+
 						</div>
 						<h3>
 							<a href="${pageContext.request.contextPath}/product/detail?id=${product.productId}">${product.productName}</a>
 						</h3>
 						<div class="pi-price">${product.price} VNĐ</div>
-						<a href="#" class="btn btn-default add2cart">Add to cart</a>
 					</div>
 				</div>
 			</c:forEach>
@@ -36,6 +32,8 @@
 	</div>
 </div>
 
+
+<%-- 
 <!-- BEGIN SIDEBAR & CONTENT -->
 <div class="row margin-bottom-40 ">
 	<!-- BEGIN SIDEBAR -->
@@ -461,3 +459,5 @@ Nostrud duis molestie at dolore.</p>
     </div>
     <!-- END fast view of a product -->
 <!-- END POPUP VIEW PRODUCT -->
+
+--%>

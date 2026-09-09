@@ -24,7 +24,7 @@ import vn.iotstar.services.IProductService;
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
 maxFileSize = 1024 * 1024 * 10, // 10MB
 maxRequestSize = 1024 * 1024 * 50) // 50MB
-// @WebServlet("/admin/product/add")
+// @WebServlet("/admin/products/add")
 public class ProductAddController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -74,18 +74,28 @@ public class ProductAddController extends HttpServlet {
 		} catch (FileNotFoundException fne) {
 			fne.printStackTrace();
 		}
-		Category category = categoryService.findById(Integer.parseInt(req.getParameter("categoryId")));
+		String categoryIdStr = req.getParameter("categoryId");
+		int categoryId = 0;
+		if (categoryIdStr != null && !categoryIdStr.trim().isEmpty()) {
+			try {
+				categoryId = Integer.parseInt(categoryIdStr.trim());
+			} catch (NumberFormatException e) {
+				categoryId = 0;
+			}
+		}
+		Category category = categoryService.findById(categoryId);
 		product.setCategory(category);
-		productService.insert(product);
+		if (category != null) {
+			productService.insert(product);
+		}
 
 		// đưa model vào phương thức insert
 		
 		// chuyển trang
-		String categoryId = req.getParameter("categoryId");
-		if (categoryId == null || categoryId.trim().isEmpty()) {
-			resp.sendRedirect(req.getContextPath() + "/admin/product");
+		if (categoryIdStr == null || categoryIdStr.trim().isEmpty()) {
+			resp.sendRedirect(req.getContextPath() + "/admin/products");
 			return;
 		}
-		resp.sendRedirect(req.getContextPath() + "/admin/product?categoryId=" + categoryId);
+		resp.sendRedirect(req.getContextPath() + "/admin/products?categoryId=" + categoryIdStr);
 	}
 }

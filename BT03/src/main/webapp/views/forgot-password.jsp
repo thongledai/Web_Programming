@@ -36,8 +36,15 @@
 								class="form-control"
 								id="email"
 								name="email"
+								value="${email}"
 								required
 								style="color: black;">
+
+							<c:if test="${emailError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${emailError}
+								</span>
+							</c:if>
 
 						</div>
 

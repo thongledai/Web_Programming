@@ -19,20 +19,11 @@
                                      class="img-responsive"
                                      style="width: 100%; height: 280px; object-fit: cover; display: block;">
                             </c:if>
-                            <div>
-                                <c:if test="${not empty product.image}">
-                                    <a href="${pageContext.request.contextPath}/image?fname=${product.image}"
-                                       class="btn btn-default fancybox-button">Zoom</a>
-                                </c:if>
-                                <a href="${pageContext.request.contextPath}/product/detail?id=${product.productId}"
-                                   class="btn btn-default fancybox-fast-view">View</a>
-                            </div>
                         </div>
                         <h3>
                             <a href="${pageContext.request.contextPath}/product/detail?id=${product.productId}">${product.productName}</a>
                         </h3>
                         <div class="pi-price">${product.price} VNĐ</div>
-                        <a href="#" class="btn btn-default add2cart">Add to cart</a>
                     </div>
                 </div>
             </c:forEach>

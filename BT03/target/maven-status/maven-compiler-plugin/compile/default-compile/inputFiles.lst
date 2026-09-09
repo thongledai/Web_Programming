@@ -1,6 +1,13 @@
 D:\Documents\WebProgramming\WorkSpace_Spring_Tool_5.3.0.RELEASE\BT03\src\main\java\vn\iotstar\configs\JPAConfig.java
 D:\Documents\WebProgramming\WorkSpace_Spring_Tool_5.3.0.RELEASE\BT03\src\main\java\vn\iotstar\configs\Test.java
-D:\Documents\WebProgramming\WorkSpace_Spring_Tool_5.3.0.RELEASE\BT03\src\main\java\vn\iotstar\controller\admin\CategoryController.java
+D:\Documents\WebProgramming\WorkSpace_Spring_Tool_5.3.0.RELEASE\BT03\src\main\java\vn\iotstar\controller\admin\category\CategoryAddController.java
+D:\Documents\WebProgramming\WorkSpace_Spring_Tool_5.3.0.RELEASE\BT03\src\main\java\vn\iotstar\controller\admin\category\CategoryDeleteController.java
+D:\Documents\WebProgramming\WorkSpace_Spring_Tool_5.3.0.RELEASE\BT03\src\main\java\vn\iotstar\controller\admin\category\CategoryEditController.java
+D:\Documents\WebProgramming\WorkSpace_Spring_Tool_5.3.0.RELEASE\BT03\src\main\java\vn\iotstar\controller\admin\category\CategoryImageSupport.java
+D:\Documents\WebProgramming\WorkSpace_Spring_Tool_5.3.0.RELEASE\BT03\src\main\java\vn\iotstar\controller\admin\category\CategoryInsertController.java
+D:\Documents\WebProgramming\WorkSpace_Spring_Tool_5.3.0.RELEASE\BT03\src\main\java\vn\iotstar\controller\admin\category\CategoryListController.java
+D:\Documents\WebProgramming\WorkSpace_Spring_Tool_5.3.0.RELEASE\BT03\src\main\java\vn\iotstar\controller\admin\category\CategorySearchController.java
+D:\Documents\WebProgramming\WorkSpace_Spring_Tool_5.3.0.RELEASE\BT03\src\main\java\vn\iotstar\controller\admin\category\CategoryUpdateController.java
 D:\Documents\WebProgramming\WorkSpace_Spring_Tool_5.3.0.RELEASE\BT03\src\main\java\vn\iotstar\controller\admin\HomeController.java
 D:\Documents\WebProgramming\WorkSpace_Spring_Tool_5.3.0.RELEASE\BT03\src\main\java\vn\iotstar\controller\admin\product\ProductAddController.java
 D:\Documents\WebProgramming\WorkSpace_Spring_Tool_5.3.0.RELEASE\BT03\src\main\java\vn\iotstar\controller\admin\product\ProductController.java

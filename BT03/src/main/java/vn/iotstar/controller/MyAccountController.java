@@ -64,28 +64,82 @@ public class MyAccountController extends HttpServlet {
 		String email = value(req, "email");
 		String phone = value(req, "phone");
 		String password = value(req, "password");
-		if (username.isEmpty() || email.isEmpty()) {
-			showEdit(req, resp, user, "Username và email không được để trống");
-			return;
-		}
-		User usernameOwner = service.FindByUserName(username);
-		if (usernameOwner != null && usernameOwner.getUserid() != user.getUserid()) {
-			showEdit(req, resp, user, "Username đã được sử dụng");
-			return;
-		}
-		User emailOwner = service.findByEmail(email);
-		if (emailOwner != null && emailOwner.getUserid() != user.getUserid()) {
-			showEdit(req, resp, user, "Email đã được sử dụng");
-			return;
+
+		User editUser = new User();
+		editUser.setUserid(user.getUserid());
+		editUser.setUsername(username);
+		editUser.setFullname(fullname);
+		editUser.setEmail(email);
+		editUser.setPhone(phone);
+		editUser.setAvatar(user.getAvatar());
+
+		boolean hasError = false;
+
+		// 1. Validation username
+		if (username.isEmpty()) {
+			req.setAttribute("usernameError", "Username không được để trống");
+			hasError = true;
+		} else if (username.length() < 3 || username.length() > 50) {
+			req.setAttribute("usernameError", "Username phải từ 3 đến 50 ký tự");
+			hasError = true;
+		} else {
+			User usernameOwner = service.FindByUserName(username);
+			if (usernameOwner != null && usernameOwner.getUserid() != user.getUserid()) {
+				req.setAttribute("usernameError", "Username đã được sử dụng");
+				hasError = true;
+			}
 		}
 
-		String avatar;
+		// 2. Validation fullname
+		if (fullname.isEmpty()) {
+			req.setAttribute("fullnameError", "Họ tên không được để trống");
+			hasError = true;
+		}
+
+		// 3. Validation email
+		String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+		if (email.isEmpty()) {
+			req.setAttribute("emailError", "Email không được để trống");
+			hasError = true;
+		} else if (!email.matches(emailRegex)) {
+			req.setAttribute("emailError", "Email không đúng định dạng");
+			hasError = true;
+		} else {
+			User emailOwner = service.findByEmail(email);
+			if (emailOwner != null && emailOwner.getUserid() != user.getUserid()) {
+				req.setAttribute("emailError", "Email đã được sử dụng");
+				hasError = true;
+			}
+		}
+
+		// 4. Validation phone
+		if (!phone.isEmpty() && !phone.matches("^0[0-9]{9,10}$")) {
+			req.setAttribute("phoneError", "Số điện thoại không hợp lệ (phải từ 10-11 số và bắt đầu bằng 0)");
+			hasError = true;
+		}
+
+		// 5. Validation password
+		if (!password.isEmpty() && password.length() < 6) {
+			req.setAttribute("passwordError", "Mật khẩu mới phải từ 6 ký tự trở lên");
+			hasError = true;
+		}
+
+		// 6. Avatar upload validation
+		String avatar = null;
 		try {
 			avatar = uploadAvatar(req);
 		} catch (ServletException e) {
-			showEdit(req, resp, user, e.getMessage());
+			req.setAttribute("avatarError", e.getMessage());
+			hasError = true;
+		}
+
+		if (hasError) {
+			req.setAttribute("user", editUser);
+			req.setAttribute("edit", true);
+			req.getRequestDispatcher("/views/member/myaccount.jsp").forward(req, resp);
 			return;
 		}
+
 		if (avatar == null) {
 			avatar = user.getAvatar();
 		}
@@ -118,7 +172,10 @@ public class MyAccountController extends HttpServlet {
 			resp.sendRedirect(req.getContextPath() + "/verify-otp");
 		} catch (Exception e) {
 			clearPendingProfile(session);
-			showEdit(req, resp, user, "Không thể gửi OTP. Thông tin chưa được cập nhật.");
+			req.setAttribute("user", editUser);
+			req.setAttribute("edit", true);
+			req.setAttribute("error", "Không thể gửi OTP. Thông tin chưa được cập nhật.");
+			req.getRequestDispatcher("/views/member/myaccount.jsp").forward(req, resp);
 		}
 	}
 

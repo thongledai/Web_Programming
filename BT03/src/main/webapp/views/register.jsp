@@ -32,6 +32,12 @@
 								value="${username}" required
 								style="color: black;">
 
+							<c:if test="${usernameError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${usernameError}
+								</span>
+							</c:if>
+
 						</div>
 
 					</div>
@@ -48,6 +54,12 @@
 								id="password" name="password"
 								required style="color: black;">
 
+							<c:if test="${passwordError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${passwordError}
+								</span>
+							</c:if>
+
 						</div>
 
 					</div>
@@ -63,6 +75,12 @@
 							<input type="password" class="form-control"
 								id="confirmPassword" name="confirmPassword"
 								required style="color: black;">
+
+							<c:if test="${confirmPasswordError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${confirmPasswordError}
+								</span>
+							</c:if>
 
 						</div>
 
@@ -81,6 +99,12 @@
 								value="${fullname}"
 								style="color: black;">
 
+							<c:if test="${fullnameError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${fullnameError}
+								</span>
+							</c:if>
+
 						</div>
 
 					</div>
@@ -97,6 +121,12 @@
 								id="email" name="email"
 								value="${email}" required
 								style="color: black;">
+
+							<c:if test="${emailError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${emailError}
+								</span>
+							</c:if>
 
 						</div>
 
@@ -115,23 +145,15 @@
 								value="${phone}"
 								style="color: black;">
 
+							<c:if test="${phoneError != null}">
+								<span style="color: red; display: block; margin-top: 5px;">
+									${phoneError}
+								</span>
+							</c:if>
+
 						</div>
 
 					</div>
-
-					<c:if test="${passwordError != null}">
-						<div class="form-group">
-
-							<div class="col-lg-8 col-md-offset-4">
-
-								<span style="color: red; display: block; margin-top: 5px;">
-									${passwordError}
-								</span>
-
-							</div>
-
-						</div>
-					</c:if>
 
 					<div class="row">
 

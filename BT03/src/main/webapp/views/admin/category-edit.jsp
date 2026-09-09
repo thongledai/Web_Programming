@@ -3,7 +3,7 @@
 
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
-<form action="${pageContext.request.contextPath}/admin/category/update"
+<form action="${pageContext.request.contextPath}/admin/categories/update"
       method="post"
       enctype="multipart/form-data">
 
@@ -18,6 +18,11 @@
            id="categoryname"
            name="categoryname"
            value="${cate.categoryname}">
+    <c:if test="${categorynameError != null}">
+        <span style="color: red; display: block; margin-top: 5px;">
+            ${categorynameError}
+        </span>
+    </c:if>
 
     <br>
 
@@ -42,6 +47,11 @@
            name="images"
            accept="image/*"
            onchange="previewImage(this)">
+    <c:if test="${imagesError != null}">
+        <span style="color: red; display: block; margin-top: 5px;">
+            ${imagesError}
+        </span>
+    </c:if>
 
     <script>
     function previewImage(input) {
@@ -74,6 +84,11 @@
     </option>
 
 </select>
+<c:if test="${statusError != null}">
+    <span style="color: red; display: block; margin-top: 5px;">
+        ${statusError}
+    </span>
+</c:if>
 
 <br><br>
 
